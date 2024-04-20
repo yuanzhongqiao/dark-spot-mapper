@@ -1,72 +1,41 @@
-# Dark Spot Mapper
-
-![CI](https://github.com/orc-tuni/dark-spot-mapper/workflows/CI/badge.svg)
-![CodeQL](https://github.com/orc-tuni/dark-spot-mapper/workflows/CodeQL/badge.svg)
-[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B5825%2Fgit%40github.com%3Aorc-tuni%2Fdark-spot-mapper.git.svg?type=shield)](https://app.fossa.com/projects/custom%2B5825%2Fgit%40github.com%3Aorc-tuni%2Fdark-spot-mapper.git?ref=badge_shield)
-[![pipeline status](https://gitlab.com/orc-tuni/dark-spot-mapper/badges/master/pipeline.svg)](https://gitlab.com/orc-tuni/dark-spot-mapper/-/commits/master)
-[![coverage report](https://gitlab.com/orc-tuni/dark-spot-mapper/badges/master/coverage.svg)](https://gitlab.com/orc-tuni/dark-spot-mapper/-/commits/master)
-
-Dark Spot Mapper is a measurement system for imaging laser wafers and samples.
-It consists of a camera and a three-axis linear stage system.
-
-Developed by
-[Mika Mäki](https://www.linkedin.com/in/mikamaki/) 2016-2020 for the
-[Optoelectronics Research Centre of Tampere University](https://research.tuni.fi/orc/) and
-[Vexlum Ltd](https://vexlum.com/).
-
-As of 2020 the software is fully functional, but the user interface (dark_spot_mapper.py) is waiting for a major rework.
-
-## Cameras
-Supported libraries are National Instruments NI Vision / IMAQdx and
-[OpenCV](https://github.com/opencv/opencv)
-(USB webcams, FireWire etc.).
-OpenCV is recommended, as the National Instruments support is practically Windows-only and deprecated.
-FireWire support is not included in the OpenCV available from PyPI, and custom binaries have to be used instead.
-Docker-based build scripts for generating these binaries are provided in the repository.
-They have been confirmed to work on Linux, but on Windows they have not yet been properly tested.
-
-Running the custom OpenCV builds may require the installation of various dependencies such as
-libhdf5-103 (included in hdf5-tools), libgoogle-glog0v5 and libtbb2.
-Depending on the build you're using, you may not need all of these.
-Python will inform you of the missing libraries when you attempt to start the software, so you should
-install the versions requested by Python.
-
-## Linear stages
-Currently this software supports only
-Granite Devices [SimpleMotion V1](https://granitedevices.com/wiki/SimpleMotion_library_versions)
-linear stages.
-Supported platforms are Linux (x86_64, arm32, arm64) and Windows (x86, x86_64).
-The ARM Linux support is tailored for the Raspberry Pi.
-The included binaries have been generated using the Docker build scripts of this repository.
-
-On Linux, if SimpleMotion cannot find the motor drivers (and FTDI driver cannot find the USB adapters),
-check if there are USB serial device such as ttyUSB0 in /dev. If there are, it means that
-the kernel libFTDI driver has taken over the devices and the D2XX driver included in SimpleMotion
-cannot therefore talk to them. To resolve this, you'll have to copy the udev rule
-`99-simplemotion.rules` to `/etc/udev/rules.d`
-Then run
-`udevadm control --reload-rules && udevadm trigger`
-to apply the changes.
-This rule also gives the proper permissions for the devices, but you may have to allow your user to use the serial
-ports with the command
-`sudo adduser YOUR_USERNAME dialout`
-
-The udev rule may not be enough to keep libFTDI off the adapters, and you may have to disable the kernel modules with
-`sudo modprobe -r ftdi_sio` and
-`sudo modprobe -r usbserial`.
-To make the disabling of the kernel modules permanent, edit the file
-`sudo nano /etc/modprobe.d/blacklist-ftdi.conf`
-and add the lines
-`blacklist ftdi_sio` and
-`blacklist usbserial`
-Then run
-`sudo update-initramfs -u`
-to apply the changes after the next reboot.
-
-If you have compiled the Linux binaries with Alpine and you run them on Ubuntu,
-you have to install the package "musl-dev".
-You will also have to manually create a symlink with
-`sudo ln -s /usr/lib/x86_64-linux-musl/libc.so /usr/lib/libc.musl-x86_64.so.1`.
-
-## Licensing
-[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B5825%2Fgit%40github.com%3Aorc-tuni%2Fdark-spot-mapper.git.svg?type=large)](https://app.fossa.com/projects/custom%2B5825%2Fgit%40github.com%3Aorc-tuni%2Fdark-spot-mapper.git?ref=badge_large)
+<div class="Box-sc-g0xbh4-0 bJMeLZ js-snippet-clipboard-copy-unpositioned" data-hpc="true"><article class="markdown-body entry-content container-lg" itemprop="text"><div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">暗点映射器</font></font></h1><a id="user-content-dark-spot-mapper" class="anchor" aria-label="永久链接：暗点映射器" href="#dark-spot-mapper"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="https://github.com/orc-tuni/dark-spot-mapper/workflows/CI/badge.svg"><img src="https://github.com/orc-tuni/dark-spot-mapper/workflows/CI/badge.svg" alt="CI" style="max-width: 100%;"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/orc-tuni/dark-spot-mapper/workflows/CodeQL/badge.svg"><img src="https://github.com/orc-tuni/dark-spot-mapper/workflows/CodeQL/badge.svg" alt="代码QL" style="max-width: 100%;"></a>
+<a href="https://app.fossa.com/projects/custom%2B5825%2Fgit%40github.com%3Aorc-tuni%2Fdark-spot-mapper.git?ref=badge_shield" rel="nofollow"><img src="https://camo.githubusercontent.com/3b3a15bfc2be8cc1b3bb6ec6125329c21dcc53a98e2b3a6b018da702ceb3544e/68747470733a2f2f6170702e666f7373612e636f6d2f6170692f70726f6a656374732f637573746f6d253242353832352532466769742534306769746875622e636f6d2533416f72632d74756e692532466461726b2d73706f742d6d61707065722e6769742e7376673f747970653d736869656c64" alt="福萨状态" data-canonical-src="https://app.fossa.com/api/projects/custom%2B5825%2Fgit%40github.com%3Aorc-tuni%2Fdark-spot-mapper.git.svg?type=shield" style="max-width: 100%;"></a>
+<a href="https://gitlab.com/orc-tuni/dark-spot-mapper/-/commits/master" rel="nofollow"><img src="https://camo.githubusercontent.com/b895cc85fb95b6a6033851d88a45bdfb37c098b47496d29d56b866c0d852eeb5/68747470733a2f2f6769746c61622e636f6d2f6f72632d74756e692f6461726b2d73706f742d6d61707065722f6261646765732f6d61737465722f706970656c696e652e737667" alt="管道状态" data-canonical-src="https://gitlab.com/orc-tuni/dark-spot-mapper/badges/master/pipeline.svg" style="max-width: 100%;"></a>
+<a href="https://gitlab.com/orc-tuni/dark-spot-mapper/-/commits/master" rel="nofollow"><img src="https://camo.githubusercontent.com/32c17ccb0cc3c02e0dd4a957738014fa50f7d06ffc318d67d530ddeb3b73c40a/68747470733a2f2f6769746c61622e636f6d2f6f72632d74756e692f6461726b2d73706f742d6d61707065722f6261646765732f6d61737465722f636f7665726167652e737667" alt="报道报告" data-canonical-src="https://gitlab.com/orc-tuni/dark-spot-mapper/badges/master/coverage.svg" style="max-width: 100%;"></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Dark Spot Mapper 是一种用于对激光晶圆和样品进行成像的测量系统。它由相机和三轴线性平台系统组成。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"></font><a href="https://www.linkedin.com/in/mikamaki/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">由Mika Mäki</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> 2016-2020 为
+</font></font><a href="https://research.tuni.fi/orc/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">坦佩雷大学光电研究中心</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">和
+</font></font><a href="https://vexlum.com/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Vexlum Ltd</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">开发
+</font><font style="vertical-align: inherit;">。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">截至 2020 年，该软件功能齐全，但用户界面 (dark_spot_mapper.py) 正在等待重大修改。</font></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">相机</font></font></h2><a id="user-content-cameras" class="anchor" aria-label="永久链接：相机" href="#cameras"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">支持的库有 National Instruments NI Vision / IMAQdx 和
+</font></font><a href="https://github.com/opencv/opencv"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenCV</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> 
+（USB 网络摄像头、FireWire 等）。建议使用 OpenCV，因为 National Instruments 支持实际上仅适用于 Windows，并且已被弃用。 PyPI 提供的 OpenCV 中不包含 FireWire 支持，必须使用自定义二进制文件。存储库中提供了用于生成这些二进制文件的基于 Docker 的构建脚本。它们已被证实可以在 Linux 上运行，但在 Windows 上尚未经过适当的测试。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">运行自定义 OpenCV 版本可能需要安装各种依赖项，例如 libhdf5-103（包含在 hdf5-tools 中）、libgoogle-glog0v5 和 libtbb2。根据您使用的构建，您可能不需要所有这些。当您尝试启动软件时，Python 会通知您缺少的库，因此您应该安装 Python 请求的版本。</font></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">线性平台</font></font></h2><a id="user-content-linear-stages" class="anchor" aria-label="永久链接：线性平台" href="#linear-stages"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">目前该软件仅支持 Granite Devices </font></font><a href="https://granitedevices.com/wiki/SimpleMotion_library_versions" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SimpleMotion V1</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+线性平台。支持的平台为 Linux（x86_64、arm32、arm64）和 Windows（x86、x86_64）。 ARM Linux 支持专为 Raspberry Pi 量身定制。包含的二进制文件是使用此存储库的 Docker 构建脚本生成的。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在Linux上，如果SimpleMotion找不到电机驱动程序（并且FTDI驱动程序找不到USB适配器），请检查/dev中是否有USB串行设备，例如ttyUSB0。如果有，则意味着内核 libFTDI 驱动程序已接管这些设备，因此 SimpleMotion 中包含的 D2XX 驱动程序无法与它们通信。要解决此问题，您必须将 udev 规则复制
+</font></font><code>99-simplemotion.rules</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">到</font></font><code>/etc/udev/rules.d</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+然后运行
+</font></font><code>udevadm control --reload-rules &amp;&amp; udevadm trigger</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+以应用更改。此规则还为设备提供了适当的权限，但您可能必须允许您的用户通过以下命令使用串行端口
+</font></font><code>sudo adduser YOUR_USERNAME dialout</code></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">udev 规则可能不足以使 libFTDI 远离适配器，并且您可能必须使用 和 禁用内核
+</font></font><code>sudo modprobe -r ftdi_sio</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">模块
+</font></font><code>sudo modprobe -r usbserial</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。要永久禁用内核模块，请编辑该文件
+</font><font style="vertical-align: inherit;">并
+</font></font><code>sudo nano /etc/modprobe.d/blacklist-ftdi.conf</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+添加行
+</font><font style="vertical-align: inherit;">
+然后运行
+</font><font style="vertical-align: inherit;">
+以在下次重新启动后应用更改。</font></font><code>blacklist ftdi_sio</code><font style="vertical-align: inherit;"></font><code>blacklist usbserial</code><font style="vertical-align: inherit;"></font><code>sudo update-initramfs -u</code><font style="vertical-align: inherit;"></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您使用 Alpine 编译了 Linux 二进制文件并在 Ubuntu 上运行它们，则必须安装包“musl-dev”。您还必须手动创建符号链接
+</font></font><code>sudo ln -s /usr/lib/x86_64-linux-musl/libc.so /usr/lib/libc.musl-x86_64.so.1</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">许可</font></font></h2><a id="user-content-licensing" class="anchor" aria-label="永久链接：许可" href="#licensing"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a href="https://app.fossa.com/projects/custom%2B5825%2Fgit%40github.com%3Aorc-tuni%2Fdark-spot-mapper.git?ref=badge_large" rel="nofollow"><img src="https://camo.githubusercontent.com/613105e809585e12a151f0f522933db6ae5e5a520c0708bba921b746da182da3/68747470733a2f2f6170702e666f7373612e636f6d2f6170692f70726f6a656374732f637573746f6d253242353832352532466769742534306769746875622e636f6d2533416f72632d74756e692532466461726b2d73706f742d6d61707065722e6769742e7376673f747970653d6c61726765" alt="福萨状态" data-canonical-src="https://app.fossa.com/api/projects/custom%2B5825%2Fgit%40github.com%3Aorc-tuni%2Fdark-spot-mapper.git.svg?type=large" style="max-width: 100%;"></a></p>
+</article></div>
